@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 POSTGRES_CERTIFICATES_PATH=/.postgresql
 
 if [ "$POSTGRES_ENABLE_SSL_AUTH" = "true" ]
@@ -16,7 +18,6 @@ fi
 if [ "$TELEMETRY_METRICS_ENABLED" = "true" ]
 then
   export JAVA_OPTS="${JAVA_OPTS} -javaagent:/jmx/jmx_prometheus_javaagent.jar=12345:/jmx/config.yaml"
-
 fi
 
 if [ "$ADD_ROOT_CERTS" = "true" ]
@@ -30,6 +31,7 @@ then
   export JAVA_OPTS="${JAVA_OPTS} -Djavax.net.ssl.trustStore=mystore -Djavax.net.ssl.trustStorePassword=changeit"
 fi
 
+export USER=$(id -u)
+export GROUP_NAME=$(id -g)
 
-
-/scripts/entrypoint.sh
+exec /scripts/entrypoint.sh

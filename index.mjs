@@ -1,13 +1,13 @@
 #!/usr/bin/env zx
 
 const {
-  GEOSERVER_VERSION,
+  GEOSERVER_VERSION = '2.26.0',
   IMAGE_DOCKER_REGISTRY,
-  IMAGE_REPO,
+  IMAGE_REPO = 'geoserver',
   WORK_DIR = '/tmp/geoserver',
-  OTEL_VERSION = 'v1.28.0',
+  OTEL_VERSION = 'v2.9.0',
   LOG4J_VERSION = '2.17.2',
-  JMX_PROMETHEUS_VERSION = '0.19.0'
+  JMX_PROMETHEUS_VERSION = '0.19.0',
 } = process.env;
 
 try {
