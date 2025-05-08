@@ -2,6 +2,7 @@ ARG GEOSERVER_BASE_IMAGE
 
 FROM ${GEOSERVER_BASE_IMAGE}
 
+ARG GEOSERVER_VERSION
 ARG OTEL_VERSION
 ARG LOG4J_VERSION
 ARG JMX_PROMETHEUS_VERSION
@@ -42,6 +43,23 @@ COPY cert-start.sh /scripts/cert-start.sh
 
 RUN useradd -ms /bin/bash user && usermod -a -G root user
 
+RUN echo ${GEOSERVER_VERSION} 
+RUN echo ${GEOSERVER_VERSION} | awk '{print ($1 >= 2.27)}'
+# Install GeoServer ogcapi-features-plugin. Available in GeoServer 2.27 and later.
+# This plugin is required for the GeoServer to support OGC API Features.
+# The plugin is not included in the GeoServer base image by default (right to May 8th 2025).
+RUN if [ -n "${GEOSERVER_VERSION}" ] && [ "$(echo ${GEOSERVER_VERSION} | awk '{print ($1 >= 2.27)}')" -eq 1 ]; then \
+    mkdir /tmp/ogcfeaturesplugin && wget --directory-prefix=/tmp/ogcfeaturesplugin https://build.geoserver.org/geoserver/${GEOSERVER_VERSION}.x/ext-latest/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-ogcapi-features-plugin.zip \
+    && unzip /tmp/ogcfeaturesplugin/geoserver-${GEOSERVER_VERSION}-SNAPSHOT-ogcapi-features-plugin.zip -d /tmp/ogcfeaturesplugin \
+    && cp -r /tmp/ogcfeaturesplugin/* ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib \
+    && rm -rf /tmp/ogcfeaturesplugin; \
+fi
+
 USER user
 
 ENTRYPOINT ["/bin/bash", "/scripts/cert-start.sh"]
+
+
+
+
+
