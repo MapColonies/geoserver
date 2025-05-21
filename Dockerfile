@@ -34,7 +34,7 @@ RUN chmod -R g=u ${CATALINA_HOME} /opt /usr/local/tomcat /settings /etc/certs \
     /scripts /tmp/ /home /community_plugins/ \
     ${GEOSERVER_HOME} /usr/share/fonts/
 
-RUN sed -i 's/chmod o+rw \"\${CERT_DIR}\"\;gwc_file_perms \;chmod 400 \"\${CATALINA_HOME}\"\/conf\/\*/ /g' /scripts/entrypoint.sh
+RUN sed -i 's/chmod o+rw "\${CERT_DIR}";gwc_file_perms ;find \${CATALINA_HOME}\/conf\/ -type f -exec chmod 400 {} \\;//g' /scripts/entrypoint.sh
 
 RUN mkdir /.postgresql && chmod g+w /.postgresql
 
