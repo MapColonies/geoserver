@@ -58,8 +58,3 @@ fi
 USER user
 
 ENTRYPOINT ["/bin/bash", "/scripts/cert-start.sh"]
-
-
-
-
-
