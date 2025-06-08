@@ -18,8 +18,6 @@ try {
 		.slice(0, 2)
 		.join('.');
 
-	console.log(geoserverMajorMinorVersion);
-
 	await $`docker build -q --build-arg OTEL_VERSION=${OTEL_VERSION} --build-arg LOG4J_VERSION=${LOG4J_VERSION} --build-arg JMX_PROMETHEUS_VERSION=${JMX_PROMETHEUS_VERSION} --build-arg GEOSERVER_BASE_IMAGE=${geoserverBaseImageName} --build-arg GEOSERVER_VERSION=${geoserverMajorMinorVersion} -f Dockerfile -t ${imageName} .`;
 
 	console.log(chalk.blue('Builds Openshift ready Geoserver Image'));
