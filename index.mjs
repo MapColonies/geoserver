@@ -11,9 +11,6 @@ try {
 	const packageVersion = await require('./package.json').version;
 	const imageName = `${IMAGE_REPO}:v${packageVersion}-${GEOSERVER_VERSION}`;
 	const geoserverBaseImageName = `kartoza/geoserver:${GEOSERVER_VERSION}`;
-	const geoserverMajorMinorVersion = GEOSERVER_VERSION.split('.')
-		.slice(0, 2)
-		.join('.');
 
 	await $`docker build -q --build-arg GEOSERVER_BASE_IMAGE=${geoserverBaseImageName} --build-arg GEOSERVER_VERSION=${geoserverMajorMinorVersion} -f Dockerfile -t ${imageName} .`;
 
