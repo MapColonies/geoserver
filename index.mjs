@@ -12,7 +12,7 @@ try {
 	const imageName = `${IMAGE_REPO}:v${packageVersion}-${GEOSERVER_VERSION}`;
 	const geoserverBaseImageName = `kartoza/geoserver:${GEOSERVER_VERSION}`;
 
-	await $`docker build -q --build-arg GEOSERVER_BASE_IMAGE=${geoserverBaseImageName} --build-arg GEOSERVER_VERSION=${geoserverMajorMinorVersion} -f Dockerfile -t ${imageName} .`;
+	await $`docker build -q --build-arg GEOSERVER_BASE_IMAGE=${geoserverBaseImageName} -f Dockerfile -t ${imageName} .`;
 
 	console.log(chalk.blue('Builds Openshift ready Geoserver Image'));
 	console.log(IMAGE_DOCKER_REGISTRY);
