@@ -7,6 +7,16 @@ global:
 cloudProvider:
   dockerRegistryUrl: acrarolibotnonprod.azurecr.io
 
+mclabels:
+  component: backend
+  partOf: serving
+  owner: raster
+  gisDomain: raster
+  prometheus:
+    enabled: true
+    port: 8080
+  logScraping: true
+
 image:
   geoserverRepository: geoserver-os
   geoserverTag: "v1.0.0-2.19.1"

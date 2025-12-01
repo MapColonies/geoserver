@@ -3,3 +3,8 @@ name: geoserver
 version: 1.0.0
 appVersion: 2.19.1
 description: Chart for geoserver in openshift
+
+dependencies:
+  - name: mclabels
+    version: 1.0.1
+    repository: oci://acrarolibotnonprod.azurecr.io/helm/infra

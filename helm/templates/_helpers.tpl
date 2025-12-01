@@ -54,6 +54,7 @@ app.kubernetes.io/part-of	: {{ .Values.global.partOf }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+{{ include "mclabels.labels" . }}
 {{- end }}
 
 {{/*
@@ -62,6 +63,7 @@ Selector labels
 {{- define "geoserver.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "geoserver.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "mclabels.selectorLabels" . }}
 {{- end }}
 
 {{/*
