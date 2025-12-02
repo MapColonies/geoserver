@@ -52,6 +52,15 @@ pgSslAuth:
 extraGeoserverEnv: |
   - name: COMMUNITY_EXTENSIONS
     value: "cog-plugin"
+  - name: STABLE_EXTENSIONS
+    value: "ogcapi-features-plugin"
+  - name: TELEMETRY_METRICS_ENABLED
+    value: "true"
+  - name: TELEMETRY_TRACING_ENABLED
+    value: "true"
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: "http://otel_collector:4318"
+
 #  - name: KEY_2
 #    value: "VALUE_2"
 
