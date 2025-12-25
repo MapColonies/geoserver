@@ -5,7 +5,7 @@ global:
   cloudProvider: {}
 
 cloudProvider:
-  dockerRegistryUrl: acrarolibotnonprod.azurecr.io
+  dockerRegistryUrl: &dockerRegistry acrarolibotnonprod.azurecr.io
 
 mclabels:
   component: backend

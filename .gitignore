@@ -1,1 +1,4 @@
 node_modules
+helm/charts/*.tgz
+helm/Chart.lock
+
