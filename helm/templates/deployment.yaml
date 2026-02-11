@@ -21,6 +21,7 @@ spec:
         {{- with .Values.podAnnotations }}
         {{- (tpl . $) | indent 8 }}
         {{- end }}
+        {{ include "mclabels.annotations" . | nindent 8 }}
     spec:
       imagePullSecrets:
         - name: {{ .Values.global.pullSecretName }}

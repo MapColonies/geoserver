@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
 {{ include "geoserver.proxyLabels" . | indent 8 }}
+      annotations:
+        {{ include "mclabels.annotations" . | nindent 8 }}
     spec:
       imagePullSecrets:
         - name: {{ .Values.global.pullSecretName }}

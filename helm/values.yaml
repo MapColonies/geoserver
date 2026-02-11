@@ -4,8 +4,14 @@ global:
   pullSecretName: acr-registry
   cloudProvider: {}
 
-cloudProvider:
-  dockerRegistryUrl: acrarolibotnonprod.azurecr.io
+mclabels:
+  component: backend
+  partOf: ""  # Override with your service group (e.g., serving, processing)
+  owner: ""  # Override with your team/domain (e.g., raster, vector)
+  prometheus:
+    enabled: true
+    port: 8080
+  logScraping: true
 
 image:
   geoserverRepository: geoserver-os
