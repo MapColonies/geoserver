@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 const {
-	GEOSERVER_VERSION = '2.27.1--v2025.07.17',
+	GEOSERVER_VERSION = '3.0.1--v2026.09.04',
 	IMAGE_DOCKER_REGISTRY,
 	IMAGE_REPO = 'geoserver',
 	WORK_DIR = '/tmp/geoserver',
