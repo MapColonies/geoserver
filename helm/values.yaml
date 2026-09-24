@@ -15,7 +15,7 @@ mclabels:
 
 image:
   geoserverRepository: geoserver-os
-  geoserverTag: "v1.0.0-2.19.1"
+  geoserverTag: "v3.0.0-3.0.1"
   sidecarRepository: config-sidecar
   sidecarTag: "v1.0.0"
 

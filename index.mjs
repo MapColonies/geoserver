@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 const {
-	GEOSERVER_VERSION = '2.27.1--v2025.07.17',
+	GEOSERVER_VERSION = '3.0.1--v2026.09.04',
 	IMAGE_DOCKER_REGISTRY,
 	IMAGE_REPO = 'geoserver',
 	WORK_DIR = '/tmp/geoserver',
@@ -9,7 +9,7 @@ const {
 
 try {
 	const packageVersion = await require('./package.json').version;
-	const imageName = `${IMAGE_REPO}:v${packageVersion}-${GEOSERVER_VERSION}`;
+	const imageName = `${IMAGE_REPO}:v${packageVersion}-${GEOSERVER_VERSION.split('--')[0]}`;
 	const geoserverBaseImageName = `kartoza/geoserver:${GEOSERVER_VERSION}`;
 
 	await $`docker build -q --build-arg GEOSERVER_BASE_IMAGE=${geoserverBaseImageName} -f Dockerfile -t ${imageName} .`;
