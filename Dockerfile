@@ -6,8 +6,6 @@ ENV OTEL_SERVICE_NAME=geoserver
 ENV RUN_AS_ROOT=true
 ENV OTEL_LOGS_EXPORTER=none
 
-# kartoza chowns the data dir and GWC cache at startup; the arbitrary UID on
-# OpenShift owns neither. These are kartoza's own opt-outs.
 ENV CHOWN_DATA_DIR=false
 ENV CHOWN_GWC_DATA_DIR=false
 
@@ -29,8 +27,6 @@ RUN chmod -R g=u ${CATALINA_HOME} /opt /usr/local/tomcat /settings /etc/certs \
     /scripts /tmp/ /home /community_plugins/ \
     ${GEOSERVER_HOME} /usr/share/fonts/
 
-# Drop the chmods fix_permissions() runs on paths the arbitrary UID does not own.
-# The greps assert the patch applied -- sed exits 0 when it matches nothing.
 RUN set -eux; \
     utils=/scripts/lib/utils.sh; \
     grep -q 'chmod o+rw "${CERT_DIR}"' "$utils"; \
