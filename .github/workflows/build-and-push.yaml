@@ -1,0 +1,74 @@
+name: Build and push artifacts
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  DOMAIN: vector
+  IMAGE_REPOSITORY: geoserver-os
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Resolve image tag
+        id: tag
+        run: |
+          base_image=$(sed -n 's|^ARG GEOSERVER_BASE_IMAGE=kartoza/geoserver:||p' Dockerfile)
+          geoserver_version=${base_image%%--*}
+          test -n "$geoserver_version"
+          echo "image_tag=${{ github.ref_name }}-${geoserver_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Artifactory Login
+        uses: MapColonies/shared-workflows/actions/artifactory-login@artifactory-login-v1.0.0
+        with:
+          registry: ${{ secrets.ACR_URL }}
+          username: ${{ secrets.ACR_PUSH_USER }}
+          password: ${{ secrets.ACR_PUSH_TOKEN }}
+
+      - name: Build Docker Image
+        id: build
+        uses: MapColonies/shared-workflows/actions/build-docker@build-docker-v1.1.0
+        with:
+          domain: ${{ env.DOMAIN }}
+          registry: ${{ secrets.ACR_URL }}
+          repository: ${{ env.IMAGE_REPOSITORY }}
+          tag: ${{ steps.tag.outputs.image_tag }}
+
+      - name: Push Docker Image
+        uses: MapColonies/shared-workflows/actions/push-docker@push-docker-v1.0.1
+        with:
+          image_name: ${{ steps.build.outputs.docker_image_full_name }}
+          image_tag: ${{ steps.build.outputs.docker_image_tag }}
+
+      - name: Build and Push Helm Chart
+        uses: MapColonies/shared-workflows/actions/build-and-push-helm@build-and-push-helm-v1.0.1
+        with:
+          context: ./helm
+          domain: ${{ env.DOMAIN }}
+          registry: ${{ secrets.ACR_URL }}
+
+      - name: Update Artifacts File- Docker
+        uses: MapColonies/shared-workflows/actions/update-artifacts-file@update-artifacts-file-v1.1.1
+        with:
+          domain: ${{ env.DOMAIN }}
+          artifact_name: ${{ env.IMAGE_REPOSITORY }}
+          artifact_tag: ${{ steps.build.outputs.docker_image_tag }}
+          type: docker
+          registry: ${{ secrets.ACR_URL }}
+          github_token: ${{ secrets.GH_PAT }}
+
+      - name: Update Artifacts File- Helm
+        uses: MapColonies/shared-workflows/actions/update-artifacts-file@update-artifacts-file-v1.1.1
+        with:
+          domain: ${{ env.DOMAIN }}
+          artifact_name: ${{ github.event.repository.name }}
+          artifact_tag: ${{ github.ref_name }}
+          type: helm
+          registry: ${{ secrets.ACR_URL }}
+          github_token: ${{ secrets.GH_PAT }}
