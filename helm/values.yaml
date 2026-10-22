@@ -14,8 +14,8 @@ mclabels:
   logScraping: true
 
 image:
-  geoserverRepository: geoserver-os
-  geoserverTag: "v1.0.0-2.19.1"
+  geoserverRepository: vector/geoserver-os
+  geoserverTag: "v2.1.0-3.0.1"
   sidecarRepository: config-sidecar
   sidecarTag: "v1.0.0"
 
