@@ -32,7 +32,8 @@ npx zx index.mjs
 | ENV                       | Default Value  | Description                                                          | mandatory? |
 | ------------------------- | -------------- | -------------------------------------------------------------------- | ---------- |
 | IMAGE_REPO                |                | The name of the docker image                                         | yes        |
-| GEOSERVER_VERSION         |                | The `kartoza/geoserver` version                                      | yes        |
+| GEOSERVER_VERSION         | 3.0.1          | The GeoServer version (used in the image tag)                        | no         |
+| KARTOZA_BUILD             | v2026.09.04    | The `kartoza/geoserver` build of that version                        | no         |
 | WORK_DIR                  | /tmp/geoserver | The folder where the script clones the `kartoza/geoserver` git repo  | no         |
 | IMAGE_DOCKER_REGISTRY     |                | If set it will tag image with the registry prefix                    | no         |
 | POSTGRES_ENABLE_SSL_AUTH  |                | If set it will load postgres ssl auth certs to the required location | no         |
