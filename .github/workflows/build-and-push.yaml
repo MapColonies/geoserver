@@ -6,7 +6,8 @@ on:
       - 'v*'
 
 env:
-  DOMAIN: vector
+  IMAGE_DOMAIN: common
+  HELM_DOMAIN: vector
   IMAGE_REPOSITORY: geoserver-os
 
 jobs:
@@ -35,7 +36,7 @@ jobs:
         id: build
         uses: MapColonies/shared-workflows/actions/build-docker@build-docker-v1.1.0
         with:
-          domain: ${{ env.DOMAIN }}
+          domain: ${{ env.IMAGE_DOMAIN }}
           registry: ${{ secrets.ACR_URL }}
           repository: ${{ env.IMAGE_REPOSITORY }}
           tag: ${{ steps.tag.outputs.image_tag }}
@@ -50,13 +51,13 @@ jobs:
         uses: MapColonies/shared-workflows/actions/build-and-push-helm@build-and-push-helm-v1.0.1
         with:
           context: ./helm
-          domain: ${{ env.DOMAIN }}
+          domain: ${{ env.HELM_DOMAIN }}
           registry: ${{ secrets.ACR_URL }}
 
       - name: Update Artifacts File- Docker
         uses: MapColonies/shared-workflows/actions/update-artifacts-file@update-artifacts-file-v1.1.1
         with:
-          domain: ${{ env.DOMAIN }}
+          domain: ${{ env.IMAGE_DOMAIN }}
           artifact_name: ${{ env.IMAGE_REPOSITORY }}
           artifact_tag: ${{ steps.build.outputs.docker_image_tag }}
           type: docker
@@ -66,7 +67,7 @@ jobs:
       - name: Update Artifacts File- Helm
         uses: MapColonies/shared-workflows/actions/update-artifacts-file@update-artifacts-file-v1.1.1
         with:
-          domain: ${{ env.DOMAIN }}
+          domain: ${{ env.HELM_DOMAIN }}
           artifact_name: ${{ github.event.repository.name }}
           artifact_tag: ${{ github.ref_name }}
           type: helm
