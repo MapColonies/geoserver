@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/MapColonies/geoserver/compare/v1.0.0...v1.0.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **ci:** build docker image with index.mjs ([#10](https://github.com/MapColonies/geoserver/issues/10)) ([3fa3f5e](https://github.com/MapColonies/geoserver/commit/3fa3f5e949bdb3a5e3a10fac64ab71fbcd3c831f))
+
 ## [1.0.0](https://github.com/MapColonies/geoserver/compare/v1.0.0...v1.0.0) (2026-11-14)
 
 
