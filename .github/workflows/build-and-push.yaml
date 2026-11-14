@@ -17,14 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Resolve image tag
-        id: tag
-        run: |
-          base_image=$(sed -n 's|^ARG GEOSERVER_BASE_IMAGE=kartoza/geoserver:||p' Dockerfile)
-          geoserver_version=${base_image%%--*}
-          test -n "$geoserver_version"
-          echo "image_tag=${{ github.ref_name }}-${geoserver_version}" >> "$GITHUB_OUTPUT"
-
       - name: Artifactory Login
         uses: MapColonies/shared-workflows/actions/artifactory-login@artifactory-login-v1.0.0
         with:
@@ -32,14 +24,28 @@ jobs:
           username: ${{ secrets.ACR_PUSH_USER }}
           password: ${{ secrets.ACR_PUSH_TOKEN }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build Docker Image
         id: build
-        uses: MapColonies/shared-workflows/actions/build-docker@build-docker-v1.1.0
-        with:
-          domain: ${{ env.IMAGE_DOMAIN }}
-          registry: ${{ secrets.ACR_URL }}
-          repository: ${{ env.IMAGE_REPOSITORY }}
-          tag: ${{ steps.tag.outputs.image_tag }}
+        env:
+          IMAGE_REPO: ${{ env.IMAGE_REPOSITORY }}
+          IMAGE_DOCKER_REGISTRY: ${{ secrets.ACR_URL }}/${{ env.IMAGE_DOMAIN }}
+        run: |
+          npx zx index.mjs
+          docker_image_full_name="${IMAGE_DOCKER_REGISTRY}/${IMAGE_REPO}"
+          # index.mjs doesn't fail on errors, so verify the image was actually built
+          docker_image_tag=$(docker images "$docker_image_full_name" --format '{{.Tag}}' | head -n 1)
+          test -n "$docker_image_tag"
+          echo "docker_image_full_name=${docker_image_full_name}" >> "$GITHUB_OUTPUT"
+          echo "docker_image_tag=${docker_image_tag}" >> "$GITHUB_OUTPUT"
 
       - name: Push Docker Image
         uses: MapColonies/shared-workflows/actions/push-docker@push-docker-v1.0.1
