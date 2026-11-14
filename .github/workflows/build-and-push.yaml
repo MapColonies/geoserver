@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # shared actions run checkout@v4 again; persisted v6 credentials cause a duplicate Authorization header
+          persist-credentials: false
 
       - name: Artifactory Login
         uses: MapColonies/shared-workflows/actions/artifactory-login@artifactory-login-v1.0.0
